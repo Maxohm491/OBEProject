@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR;
+using UnityEngine.XR.Hands;
 
 [System.Serializable]
 public class PrimaryButtonEvent : UnityEvent<bool> { }
@@ -9,6 +10,7 @@ public class PrimaryButtonEvent : UnityEvent<bool> { }
 public class InputCoordinator : MonoBehaviour
 {
     public PrimaryButtonEvent primaryButtonPress;
+
 
     private bool lastButtonState = false;
     private List<InputDevice> devicesWithPrimaryButton;
@@ -43,11 +45,8 @@ public class InputCoordinator : MonoBehaviour
 
     private void InputDevices_deviceConnected(InputDevice device)
     {
-        bool discardedValue;
-        if (device.TryGetFeatureValue(CommonUsages.primaryButton, out discardedValue))
-        {
-            devicesWithPrimaryButton.Add(device); // Add any devices that have a primary button.
-        }
+        devicesWithPrimaryButton.Add(device); // Add any devices
+        
     }
 
     private void InputDevices_deviceDisconnected(InputDevice device)
@@ -59,22 +58,27 @@ public class InputCoordinator : MonoBehaviour
     void Update()
     {
         bool tempState = false;
-        foreach (var device in devicesWithPrimaryButton)
-        {
-            bool primaryButtonState = false;
-            tempState = device.TryGetFeatureValue(CommonUsages.primaryButton, out primaryButtonState) // did get a value
-                        && primaryButtonState // the value we got
-                        || tempState; // cumulative result from other controllers
+        // foreach (var device in devicesWithPrimaryButton)
+        // {
+        //     bool primaryButtonState = false;
+        //     tempState = device.TryGetFeatureValue(CommonUsages.primaryButton, out primaryButtonState) // did get a value
+        //                 && primaryButtonState // the value we got
+        //                 || tempState; // cumulative result from other controllers
 
-            // var handState = 1;
-            // if (device.TryGetFeatureValue(CommonUsages.handData, out handState)) {
-            // }
-        }
+        //     // var handState = 1;
+        //     // if (device.TryGetFeatureValue(CommonUsages.handData, out handState)) {
+        //     // }
+        // }
+    // foreach (var device in devicesWithPrimaryButton) {
+    //     bool pinchState = false;
+    //     MetaAimHand.aimFlags
+    // }
 
-        if (tempState != lastButtonState) // Button state changed since last frame
-        {
-            primaryButtonPress?.Invoke(tempState);
-            lastButtonState = tempState;
-        }
+
+    //     if (tempState != lastButtonState) // Button state changed since last frame
+    //     {
+    //         primaryButtonPress?.Invoke(tempState);
+    //         lastButtonState = tempState;
+    //     }
     }
 }
