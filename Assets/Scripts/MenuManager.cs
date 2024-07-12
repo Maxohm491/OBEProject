@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class MenuManager : MonoBehaviour
 
     void PlusButtonClicked() {
         timeUntilOBE += 30;
-        timeText.text = ((int)timeUntilOBE / 60).ToString() + ":" + (timeUntilOBE % 60).ToString(); 
+        timeText.text = ((int)timeUntilOBE / 60).ToString() + ":" + (timeUntilOBE % 60 == 0 ? "00" : "30"); 
     }
 
     void MinusButtonClicked() {
@@ -46,11 +47,15 @@ public class MenuManager : MonoBehaviour
         }
 
         timeUntilOBE -= 30;
-        timeText.text = ((int)timeUntilOBE / 60).ToString() + ":" + (timeUntilOBE % 60).ToString(); 
+        timeText.text = ((int)timeUntilOBE / 60).ToString() + ":" + (timeUntilOBE % 60 == 0 ? "00" : "30"); 
     }
 
     void StartButtonClicked() {
         Debug.Log("Starting");
+        SettingsManager.Instance.controlInOBE = avatarControl;
+        SettingsManager.Instance.timeUntilOBE = timeUntilOBE;
+
+        SceneManager.LoadScene("MainScene");
     }
 
     void ToggleGender() {
