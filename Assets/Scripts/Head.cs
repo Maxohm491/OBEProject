@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Head : MonoBehaviour
 {
-    [SerializeField] private Transform rootObject, followObject;
+    [SerializeField] private Transform rootObject, followObject, hips;
     [SerializeField] private Vector3 positionOffset, rotationOffset;
 
     [SerializeField] private Vector3 headBodyOffset;
@@ -12,7 +12,7 @@ public class Head : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        headBodyOffset = rootObject.position - transform.position;
+        headBodyOffset = hips.position - transform.position;
     }
 
     // Update is called once per frame
@@ -21,7 +21,9 @@ public class Head : MonoBehaviour
         rootObject.position = transform.position + headBodyOffset;
         rootObject.forward = Vector3.ProjectOnPlane(followObject.forward, Vector3.up).normalized;
 
-        transform.position = followObject.TransformPoint(positionOffset);
+        transform.position = followObject.position; //.TransformPoint(positionoffset)
         transform.rotation = followObject.rotation * Quaternion.Euler(rotationOffset);
+
+        
     }
 }
