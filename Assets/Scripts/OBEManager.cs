@@ -10,6 +10,7 @@ public class OBEManager : MonoBehaviour
     [SerializeField] private GameObject OBECameraObject;
     [SerializeField] private Transform finalOBEPosition;
     [SerializeField] private float moveSeconds = 1f;
+    [SerializeField] private float headRadius = 0.25f;
     [SerializeField] private ControlDisabler disabler;
     [SerializeField] private TextMeshProUGUI countdownText;
 
@@ -64,28 +65,33 @@ public class OBEManager : MonoBehaviour
         if(state == OBEState.Before && pressed) {
             state = OBEState.Moving;
 
-            headSetCamera.enabled = false;
-            OBECamera.enabled = true;
-
             StartCoroutine(DoOBE());
         }
     }
 
     IEnumerator DoOBE() {
+        // Offset OBE camera outside of skull
+        Vector3 backwardsUnit = Vector3.Normalize(new Vector3(-headSetCamera.transform.forward.x, 0, -headSetCamera.transform.forward.z));
+
+        OBECamera.gameObject.transform.position = headSetCamera.transform.position + (backwardsUnit * headRadius);
+        Debug.Log( OBECamera.gameObject.transform.position);
+
+        headSetCamera.enabled = false;
+        OBECamera.enabled = true;
+
         if (!controlInOBE) {
             disabler.Disable();
         }
 
         yield return StartCoroutine(MoveCamera());
 
-        Debug.Log("Done moving");
         state = OBEState.DoneMoving;
     }
 
     IEnumerator MoveCamera() {
         float timeSinceStarted = 0f;
-        initialPosition = headSetCamera.gameObject.transform.position;
-
+        initialPosition = OBECamera.gameObject.transform.position;
+        
         while (timeSinceStarted < moveSeconds)
         {
             timeSinceStarted += Time.deltaTime;
