@@ -74,7 +74,6 @@ public class OBEManager : MonoBehaviour
         Vector3 backwardsUnit = Vector3.Normalize(new Vector3(-headSetCamera.transform.forward.x, 0, -headSetCamera.transform.forward.z));
 
         OBECamera.gameObject.transform.position = headSetCamera.transform.position + (backwardsUnit * headRadius);
-        Debug.Log( OBECamera.gameObject.transform.position);
 
         headSetCamera.enabled = false;
         OBECamera.enabled = true;

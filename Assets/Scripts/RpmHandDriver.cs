@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.XR.Hands;
 
 public class RpmHandDriver : XRHandSkeletonDriver
@@ -103,9 +105,19 @@ public class RpmHandDriver : XRHandSkeletonDriver
                 {
                     xrHandJointID = kvp.Key,
                     jointTransform = joint
-                }; 
+                };
 
                 m_JointTransformReferences.Add(jointRef);
             }
+            // this.InitializeFromSerializedReferences();
+        }
+
+        
+        override protected void OnJointsUpdated(XRHandJointsUpdatedEventArgs args) {
+            UpdateJointLocalPoses(args);
+        }
+
+        private void LateUpdate() {
+            ApplyUpdatedTransformPoses();
         }
     }
