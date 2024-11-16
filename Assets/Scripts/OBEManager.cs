@@ -55,6 +55,8 @@ public class OBEManager : MonoBehaviour
             countdownText.text = ((int)timeToOBE / 60).ToString() + ":" + (seconds < 10 ? "0" + seconds.ToString() : seconds.ToString());
         }
         else {
+            countdownText.text = "";
+
             OnPrimaryButtonEvent(true);
         }
     }

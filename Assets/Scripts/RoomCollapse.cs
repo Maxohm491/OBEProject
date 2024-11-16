@@ -1,9 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+
 public class RoomCollapse : MonoBehaviour
 {
     [SerializeField] private List<FadeController> objectsToFade = new List<FadeController>();
+    [SerializeField] private List<GameObject> objectsToDeactivate = new List<GameObject>();
     [SerializeField] private float fadeDuration = 2f;
     [SerializeField] private List<GameObject> objectsToMove;
     [SerializeField] private float targetY = -100f;
@@ -11,6 +13,7 @@ public class RoomCollapse : MonoBehaviour
     private bool isFading = false;
     private bool hasFadedOut = false;
     private bool isMoving = false;
+    private bool hasDeactivated = false;
     private float timer = 0f;
     private Dictionary<GameObject, float> startYPositions = new Dictionary<GameObject, float>();
 
@@ -27,10 +30,11 @@ public class RoomCollapse : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P) && !isFading && !hasFadedOut)
+        if (Input.GetKeyDown(KeyCode.P) && !isFading && !hasFadedOut && !hasDeactivated)
         {
             StartFade();
             StartMovingObjects();
+            DeactivateObjects();
         }
 
         if (isFading)
@@ -98,5 +102,17 @@ public class RoomCollapse : MonoBehaviour
     public void StartMovingObjects()
     {
         isMoving = true;
+    }
+    private void DeactivateObjects()
+    {
+        foreach (var obj in objectsToDeactivate)
+        {
+            if (obj != null)
+            {
+                obj.SetActive(false);
+            }
+        }
+
+        hasDeactivated = true;
     }
 }
