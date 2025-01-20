@@ -51,5 +51,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "OBEProject-josh.sln"
+    "dotnet.defaultSolution": "OBEBasicUnity.sln"
 }

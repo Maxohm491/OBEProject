@@ -10,12 +10,14 @@ public class ControlDisabler : MonoBehaviour
     [SerializeField] private XRHandSkeletonDriver leftHandMover, rightHandMover;
 
     public void Disable() {
+        Debug.Log("Disable");
         mainCameraMover.enabled = false;
         leftHandMover.enabled = false;
         rightHandMover.enabled = false;
     }
 
     public void Enable() {
+        Debug.Log("Enabled");
         mainCameraMover.enabled = true;
         leftHandMover.enabled = true;
         rightHandMover.enabled = true;
