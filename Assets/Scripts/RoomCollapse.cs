@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class RoomCollapse : MonoBehaviour
 {
-    [SerializeField] private List<FadeController> objectsToFade = new List<FadeController>();
+    private FadeController[] objectsToFade;
     [SerializeField] private List<GameObject> objectsToDeactivate = new List<GameObject>();
     [SerializeField] private float fadeDuration = 2f;
     [SerializeField] private List<GameObject> objectsToMove;
@@ -26,7 +26,10 @@ public class RoomCollapse : MonoBehaviour
                 startYPositions[obj] = obj.transform.position.y;
             }
         }
+
+        objectsToFade = FindObjectsOfType(typeof(FadeController)) as FadeController[];
     }
+
 
     private void Update()
     {
@@ -35,6 +38,7 @@ public class RoomCollapse : MonoBehaviour
             StartFade();
             StartMovingObjects();
             DeactivateObjects();
+
         }
 
         if (isFading)
