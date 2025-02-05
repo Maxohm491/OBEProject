@@ -8,12 +8,16 @@ public class ControlDisabler : MonoBehaviour
 {
     [SerializeField] private TrackedPoseDriver mainCameraMover;
     [SerializeField] private XRHandSkeletonDriver leftHandMover, rightHandMover;
+    [SerializeField] private GameObject leftHandIKTarget, rightHandIKTarget;
+    [SerializeField] private Transform leftRestPose, rightRestPose;
 
     public void Disable() {
         Debug.Log("Disable");
         mainCameraMover.enabled = false;
         leftHandMover.enabled = false;
         rightHandMover.enabled = false;
+        leftHandIKTarget.transform.position = leftRestPose.position;
+        rightHandIKTarget.transform.position = rightRestPose.position;
     }
 
     public void Enable() {
