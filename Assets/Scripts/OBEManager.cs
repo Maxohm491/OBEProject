@@ -24,7 +24,7 @@ public class OBEManager : MonoBehaviour
 
     private OBEState state;
     private Camera OBECamera; 
-    private float timeToOBE = 5f;
+    private float timeToOBE = 30f;
     private bool controlInOBE = false;
     private Vector3 initialPosition;
 
