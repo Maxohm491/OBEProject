@@ -12,7 +12,6 @@ public class ControlDisabler : MonoBehaviour
     [SerializeField] private Transform leftRestPose, rightRestPose;
 
     public void Disable() {
-        Debug.Log("Disable");
         mainCameraMover.enabled = false;
         leftHandMover.enabled = false;
         rightHandMover.enabled = false;
@@ -21,7 +20,6 @@ public class ControlDisabler : MonoBehaviour
     }
 
     public void Enable() {
-        Debug.Log("Enabled");
         mainCameraMover.enabled = true;
         leftHandMover.enabled = true;
         rightHandMover.enabled = true;

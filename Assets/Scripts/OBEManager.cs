@@ -1,22 +1,30 @@
+using System;
 using System.Collections;
 using TMPro;
+using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.XR.Interaction.Toolkit;
+
 
 public class OBEManager : MonoBehaviour
 {
     [SerializeField] private InputCoordinator coordinator;
     [SerializeField] private Camera headSetCamera;
     [SerializeField] private GameObject OBECameraObject;
+    [SerializeField] private Renderer fadeRenderer;
     [SerializeField] private Transform finalOBEPosition;
     [SerializeField] private float moveSeconds = 1f;
     [SerializeField] private float headRadius = 0.25f;
+    [SerializeField] private float tunnelVisionSoftness = 0.5f;
     [SerializeField] private ControlDisabler disabler;
     [SerializeField] private TextMeshProUGUI countdownText;
 
     private OBEState state;
     private Camera OBECamera; 
-    private float timeToOBE = 15f;
+    private float timeToOBE = 5f;
     private bool controlInOBE = false;
     private Vector3 initialPosition;
 
@@ -28,6 +36,8 @@ public class OBEManager : MonoBehaviour
 
     void Start()
     {
+        // volume.profile.TryGetSettings(out vignette);
+
         OBECamera = OBECameraObject.GetComponent<Camera>();
 
         headSetCamera.enabled = true;
@@ -82,7 +92,9 @@ public class OBEManager : MonoBehaviour
 
         if (!controlInOBE) {
             disabler.Disable();
-        }
+        }   
+
+        fadeRenderer.material.SetFloat("_FeatheringEffect", tunnelVisionSoftness);
 
         yield return StartCoroutine(MoveCamera());
 
@@ -96,6 +108,7 @@ public class OBEManager : MonoBehaviour
         while (timeSinceStarted < moveSeconds)
         {
             timeSinceStarted += Time.deltaTime;
+            fadeRenderer.material.SetFloat("_ApertureSize", Math.Abs(1.0f - (timeSinceStarted/moveSeconds)));
             OBECameraObject.transform.position = Vector3.Lerp(initialPosition, finalOBEPosition.position, Mathf.SmoothStep(0f, 1f, timeSinceStarted / moveSeconds));
 
             yield return null;
