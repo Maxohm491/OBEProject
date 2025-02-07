@@ -35,6 +35,7 @@ public class RoomCollapse : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P) && !isFading && !hasFadedOut && !hasDeactivated)
         {
+            objectsToFade = FindObjectsOfType(typeof(FadeController)) as FadeController[];
             StartFade();
             StartMovingObjects();
             DeactivateObjects();

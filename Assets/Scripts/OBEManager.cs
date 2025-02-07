@@ -11,7 +11,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class OBEManager : MonoBehaviour
 {
-    [SerializeField] private InputCoordinator coordinator;
     [SerializeField] private Camera headSetCamera;
     [SerializeField] private GameObject OBECameraObject;
     [SerializeField] private Renderer fadeRenderer;
@@ -24,7 +23,7 @@ public class OBEManager : MonoBehaviour
 
     private OBEState state;
     private Camera OBECamera; 
-    private float timeToOBE = 1000f;
+    private float timeToOBE = 60f;
     private bool controlInOBE = false;
     private Vector3 initialPosition;
 
@@ -42,7 +41,6 @@ public class OBEManager : MonoBehaviour
 
         headSetCamera.enabled = true;
         OBECamera.enabled = false;
-        coordinator.primaryButtonPress.AddListener(OnPrimaryButtonEvent);
 
         state = OBEState.Before;
 
