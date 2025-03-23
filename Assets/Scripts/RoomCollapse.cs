@@ -33,13 +33,9 @@ public class RoomCollapse : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P) && !isFading && !hasFadedOut && !hasDeactivated)
+        if (Input.GetKeyDown(KeyCode.P) )
         {
-            objectsToFade = FindObjectsOfType(typeof(FadeController)) as FadeController[];
             StartFade();
-            StartMovingObjects();
-            DeactivateObjects();
-
         }
 
         if (isFading)
@@ -100,8 +96,14 @@ public class RoomCollapse : MonoBehaviour
 
     public void StartFade()
     {
-        timer = 0f;
-        isFading = true;
+        if (!isFading && !hasFadedOut && !hasDeactivated) {
+            objectsToFade = FindObjectsOfType(typeof(FadeController)) as FadeController[];
+            timer = 0f;
+            isFading = true;
+            StartMovingObjects();
+            DeactivateObjects();
+        }
+
     }
 
     public void StartMovingObjects()

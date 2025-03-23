@@ -19,18 +19,21 @@ public class OBEManager : MonoBehaviour
     [SerializeField] private float headRadius = 0.25f;
     [SerializeField] private float tunnelVisionSoftness = 0.5f;
     [SerializeField] private ControlDisabler disabler;
+    [SerializeField] private RoomCollapse fader;
     [SerializeField] private TextMeshProUGUI countdownText;
 
     private OBEState state;
     private Camera OBECamera; 
     private float timeToOBE = 60f;
+    private float timeOBEtoFade = 60f;
     private bool controlInOBE = false;
     private Vector3 initialPosition;
 
     public enum OBEState {
         Before,
         Moving,
-        DoneMoving
+        DoneMoving,
+        Fading
     }
 
     void Start()
@@ -48,10 +51,11 @@ public class OBEManager : MonoBehaviour
 
         try {
             timeToOBE = SettingsManager.Instance.timeUntilOBE;
+            timeOBEtoFade = SettingsManager.Instance.timeOBEtoFade;
             controlInOBE = SettingsManager.Instance.controlInOBE;
         }
         catch {
-            Debug.LogWarning("No settings found; initialized to default value");
+            Debug.LogWarning("No settings found; initialized to default values");
         }
     }
 
@@ -62,10 +66,18 @@ public class OBEManager : MonoBehaviour
             int seconds = (int) (timeToOBE % 60);
             countdownText.text = ((int)timeToOBE / 60).ToString() + ":" + (seconds < 10 ? "0" + seconds.ToString() : seconds.ToString());
         }
-        else {
+        else if (timeToOBE <= 0 && state == OBEState.Before) {
             countdownText.text = "";
 
             OnPrimaryButtonEvent(true);
+        }
+        else if (timeOBEtoFade > 0 && state == OBEState.DoneMoving) {
+            timeOBEtoFade -= Time.deltaTime;
+        }
+        else if (timeOBEtoFade <= 0 && state == OBEState.DoneMoving) {
+            state = OBEState.Fading;
+            fader.StartFade();
+            Debug.Log("fading");
         }
     }
 

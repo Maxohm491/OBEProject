@@ -5,6 +5,7 @@ public class SettingsManager : MonoBehaviour
     public static SettingsManager Instance;
 
     public float timeUntilOBE;
+    public float timeOBEtoFade;
     public bool controlInOBE;
 
     // Start is called before the first frame update
